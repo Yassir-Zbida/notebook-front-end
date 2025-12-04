@@ -8,6 +8,10 @@ import api from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
 import { Sparkles, Save, ArrowRight, Download, ChevronLeft } from 'lucide-react';
 import { useState } from 'react';
+
+// Get API base URL for image URLs
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://api.notebook-ai.co/api';
+const IMAGE_BASE_URL = API_BASE_URL.replace('/api', '');
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -201,7 +205,7 @@ export default function NoteEditorPage() {
             <CardContent>
               {note.imageUrl ? (
                 <img
-                  src={`${import.meta.env.VITE_API_URL?.replace('/api', '')}${note.imageUrl}`}
+                  src={`${IMAGE_BASE_URL}${note.imageUrl}`}
                   alt="Note"
                   className="w-full rounded-lg"
                 />

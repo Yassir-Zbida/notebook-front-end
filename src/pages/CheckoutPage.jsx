@@ -11,7 +11,9 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuthStore } from '@/store/authStore';
 import { cn } from '@/lib/utils';
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY 
+  ? loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
+  : null;
 
 const PLAN_INFO = {
   BASIC: {

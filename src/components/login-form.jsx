@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthStore } from "@/store/authStore";
+import api from "@/lib/api";
 import logo from "/logo.svg";
 import logoDark from "/logo-dark.svg";
 
@@ -26,24 +27,12 @@ export function LoginForm({ className, ...props }) {
     setIsLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+      const res = await api.post("/auth/login", {
+        email,
+        password,
       });
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        const message =
-          data?.message ||
-          data?.error ||
-          "حدث خطأ أثناء تسجيل الدخول. حاول مرة أخرى.";
-        throw new Error(message);
-      }
-
-      const data = await res.json();
+      const data = res.data;
 
       if (data?.user && data?.tokens) {
         setAuth(data.user, data.tokens);
@@ -55,7 +44,11 @@ export function LoginForm({ className, ...props }) {
       });
       navigate("/dashboard");
     } catch (err) {
-      const message = err.message || "حدث خطأ غير متوقع.";
+      const message =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        err.message ||
+        "حدث خطأ أثناء تسجيل الدخول. حاول مرة أخرى.";
       toast({
         title: "فشل تسجيل الدخول",
         description: message,

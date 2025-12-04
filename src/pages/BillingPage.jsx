@@ -20,7 +20,9 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY 
+  ? loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
+  : null;
 
 export default function BillingPage() {
   const { toast } = useToast();
